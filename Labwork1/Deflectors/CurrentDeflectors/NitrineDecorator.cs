@@ -6,27 +6,16 @@ namespace Labworks.Deflectors.CurrentDeflectors;
 public class NitrineDecorator : Deflector
 {
     private Deflector _deflector;
+    private const int HugeDamage = 80;
     
     public NitrineDecorator(Deflector deflector)
     {
         _deflector = deflector;
     }
 
-    public override ShipState GetDamage(int damageValue)
+    public override DeflectorState GetDamage(int damageValue)
     {
-        
-        ShipState shipState = ShipState.Ok;
-        
-        if (damageValue == new DamageType().HugeDamage)
-        {
-            return ShipState.Ok;
-        }
-        else
-        {
-            shipState = _deflector.GetDamage(damageValue);
-        }
-        
-        return shipState;
+        return damageValue == HugeDamage ? DeflectorState.Ok : _deflector.GetDamage(damageValue);
     }
 
     public override DeflectorState GetStatus()

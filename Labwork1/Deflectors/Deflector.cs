@@ -4,17 +4,14 @@ namespace Labworks.Deflectors;
 
 public abstract class Deflector
 {
-    protected int DamageCounter;
+    protected int DeflectorPoints;
     protected DeflectorState DeflectorStatus = DeflectorState.Ok;
 
-    protected void UpdateDeflectorStatus()
+    protected DeflectorState UpdateDeflectorStatus(double damage)
     {
-        if (DamageCounter <= 0)
-        {
-            DeflectorStatus = DeflectorState.DeflectorDestroyed;
-        } 
+        return DeflectorPoints - damage <= 0? DeflectorState.DeflectorDestroyed : DeflectorState.Ok;
     }
-    public abstract ShipState GetDamage(int damageValue);
+    public abstract DeflectorState GetDamage(int damageValue);
     public abstract DeflectorState GetStatus();
      
 }

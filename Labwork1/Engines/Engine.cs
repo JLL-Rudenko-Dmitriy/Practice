@@ -3,20 +3,9 @@ namespace Labworks.Engines;
 
 public abstract class Engine
 {
-    public double Power { get; set; }
-    public double IncreaseCoeff { get; set; }
-
-
-    public Engine(double enginePower)
-    {
-        Power = enginePower;
-    }
-
-    public abstract void StartEngine(Fuel fuel);
-
-    public abstract double GetCurrentPower(Fuel fuel);
-
-    public abstract double GetNewFuelValue(Fuel fuel);
-
-    public abstract void IncreastDelta();
+    protected double FuelConsumption { get; init; }
+    protected double Power { get; init; }
+    
+    public abstract double GetRequiredFuel(double distance);
+    public abstract double GetTime(double distance);
 }

@@ -1,31 +1,25 @@
 ﻿using Labworks.Fuels;
 namespace Labworks.Engines.ImpulseEngines;
 
-public class ImpulseEEngine : Engine
+public class ImpulseEEngine : Engine, IImpulseEngine
 {
-    public ImpulseEEngine() : base(new ConstEnginesPowers().PowerImpulseE)
-    { }
-
-    public override void StartEngine(Fuel fuel)
+    private const double IncreaseCoefficient = 5.0;
+    private const double ImpulseEPowerConsumption = 120;
+    private const double ImpulseEFuelConsumption = 12.0;
+    
+    public ImpulseEEngine()
     {
-        IncreaseCoeff = double.Log2(Power);
-        return; 
+        Power = ImpulseEPowerConsumption;
+        FuelConsumption = ImpulseEFuelConsumption;
     }
 
-    public override double GetCurrentPower(Fuel fuel)
+    public override double GetRequiredFuel(double distance)
     {
-        fuel.Value -= 150; 
-        return base.Power;
+        return (FuelConsumption + FuelConsumption * IncreaseCoefficient) * (distance / ((double.Pow(2,Power)+Power)));
     }
-
-    public override double GetNewFuelValue(Fuel fuel)
+    
+    public override double GetTime(double distance)
     {
-        throw new NotImplementedException();
-    }
-
-    public override void IncreastDelta()
-    {
-        IncreaseCoeff++;
-        base.Power = double.Exp(IncreaseCoeff);
+        return distance / (double.Pow(2, Power) - Power);
     }
 }

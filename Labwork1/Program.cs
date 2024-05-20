@@ -1,25 +1,35 @@
-﻿using Labworks.Deflectors;
+﻿    
+using Labworks.Deflectors;
 using Labworks.Deflectors.CurrentDeflectors;
 using Labworks.Engines.ImpulseEngines;
 using Labworks.Engines.JumpEngines;
-using Labworks.Fuels;
 using Labworks.HullStrengths.CurrentHullStregthClasses;
 using Labworks.Obstacles;
 using Labworks.Route;
 using Labworks.Ships;
 using Labworks.SpaceEnvironments;
-    
 
-var route = new Route(new List<ISpaceEnvironment>()
-{
-    new NitrineParticleNebulae(envDistance: 100, obstaclesCollection: new List<Obstacle>()
+var route = new Route(
+    new List<IEnvironment>()
     {
-        new SpaceWhale()
-    }),
-});
+        new SimpleSpace(100, new List<ISpaceObstacle>()
+        {
+            new SmallMeteor()
+        }),
+        new SimpleSpace(1000, new List<ISpaceObstacle>()
+        {
+            new Meteorite()
+        }),
+        new IncreaseDensity(10, new List<IIncreaseDensityObstacle>()
+        {
+            new FotoneFlash()
+        })
+    });
 
-var shuttle = new Ship(new NitrineDecorator(new DeflectorClassTwo()), new HullStrengthClassTwo(), new ImpulseEEngine(),
-    null, new ActivePlasmaFuel(1000),new GravityMatterFuel(1000));
+var ship = new Ship(new FotoneDecorator( new DeflectorClassOne()), new HullStrengthClassOne(), new ImpulseCEngine(), new JumpAlphaEngine());
 
+var result = route.Calculate(ship);
 
-route.LaunchSoloShip(shuttle);
+Console.WriteLine(result.ToString());
+    
+    // OUTPUT: RouteData { Status = Covered, PlasmaFuel = 11000, GravityFuel = 0,46875, FinalTime = 91,68619791666666, FinalDistance = 1110 }

@@ -1,31 +1,24 @@
 ﻿using Labworks.Fuels;
 namespace Labworks.Engines.JumpEngines;
 
-public class JumpAlphaEngine : Engine
+public class JumpAlphaEngine : Engine, IJumpEngine
 {
-    public JumpAlphaEngine() : base(new ConstEnginesPowers().PowerJumpAlpha)
+    private const double IncreaseCoefficient = 5.0;
+    private const double JumpAlphaPowerConsumption = 512;
+    private const double JumpAlphaFuelConsumption = 8.0;
+    public JumpAlphaEngine()
     {
-        IncreaseCoeff = 3;
+        Power = JumpAlphaPowerConsumption;
+        FuelConsumption = JumpAlphaFuelConsumption;
     }
 
-    public override void StartEngine(Fuel fuel)
+    public override double GetRequiredFuel(double distance)
     {
-        IncreaseCoeff = 1;
-    }
-    
-    public override double GetCurrentPower(Fuel fuel)
-    {
-        fuel.Value -= (int)(200 * IncreaseCoeff);
-        return base.Power;
+        return (FuelConsumption + FuelConsumption * IncreaseCoefficient) * (distance/(Power*2));
     }
 
-    public override double GetNewFuelValue(Fuel fuel)
+    public override double GetTime(double distance)
     {
-        return fuel.Value * 0.2 * IncreaseCoeff;
-    }
-    
-    public override void IncreastDelta()
-    {
-        IncreaseCoeff += 1;
+        return distance / Power;
     }
 }

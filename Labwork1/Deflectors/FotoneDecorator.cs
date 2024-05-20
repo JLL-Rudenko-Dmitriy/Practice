@@ -14,28 +14,25 @@ public class FotoneDecorator : Deflector
         _fotoneDamageCounter = 3;
     }
 
-    public override ShipState GetDamage(int damageValue)
+    public override DeflectorState GetDamage(int damageValue)
     {
-        ShipState shipState = ShipState.Ok;
-        if (damageValue == new DamageType().FotoneDamage)
+        if (damageValue == 0)
         {
-            if (_fotoneDamageCounter <= 0)
+            if (_fotoneDamageCounter - 1 > 0)
             {
-                DeflectorStatus = DeflectorState.CrewDied;
-                shipState = ShipState.CrewDied;
+                _fotoneDamageCounter -= 1;
+                return DeflectorState.Ok;
             }
-            _fotoneDamageCounter -= 1;
+            else
+            {
+                return DeflectorState.CrewDied;
+            }
         }
-        else
-        {
-            shipState = Deflector.GetDamage(damageValue);
-            DeflectorStatus = Deflector.GetStatus();
-        }
-        return shipState;
+        return Deflector.GetDamage(damageValue);
     }
 
     public override DeflectorState GetStatus()
     {
-        return DeflectorStatus;
+        return Deflector.GetStatus();
     }
 }
