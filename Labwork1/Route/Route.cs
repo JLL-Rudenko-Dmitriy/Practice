@@ -22,16 +22,19 @@ public class Route
         foreach (var environment in Environments)
         {
             var coverInfo = environment.LaunchShip(ship);
-            if (coverInfo.Status != "Covered")
+            if (coverInfo is WalkThroughResult.Success success)
             {
-                return new RouteData(coverInfo.Status, finalPlasmaFuel, finalGravityFuel, finalTime, finalDistance);
+                finalDistance += environment.Distance;
+                finalTime += success.Time;
+                finalPlasmaFuel += success.PlasmaFuelValue;
+                finalGravityFuel += success.GravityFuelValue;
             }
-            finalDistance += environment.Distance;
-            finalTime += coverInfo.Time;
-            finalPlasmaFuel += coverInfo.PlasmaFuelValue;
-            finalGravityFuel += coverInfo.GravityFuelValue;
+            else
+            {
+                return new RouteData(Status:coverInfo.ToString(), 0, 0, 0, 0);
+            }
         }
 
-        return new RouteData("Covered", finalPlasmaFuel, finalGravityFuel, finalTime, finalDistance);
+        return new RouteData("Success", finalPlasmaFuel, finalGravityFuel,finalTime, finalDistance);
     }
 }

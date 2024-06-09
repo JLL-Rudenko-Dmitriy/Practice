@@ -1,23 +1,20 @@
 ﻿using Labworks.Fuels;
 namespace Labworks.Engines.ImpulseEngines;
 
-public class ImpulseCEngine : Engine, IImpulseEngine
+public class ImpulseCEngine : IImpulseEngine
 {
     private const double ImpulseCPowerConsumption = 12.0;
     private const double ImpulseCFuelConsumption = 120.0;
-    
-    public ImpulseCEngine()
-    {
-        Power = ImpulseCPowerConsumption;
-        FuelConsumption = ImpulseCFuelConsumption;
-    }
 
-    public override double GetRequiredFuel(double distance)
+    public double FuelConsumption { get; init; } = ImpulseCFuelConsumption;
+    public double Power { get; init; } = ImpulseCPowerConsumption;
+
+    public double GetRequiredFuel(double distance)
     {
         return (distance/Power) * FuelConsumption;
     }
     
-    public override double GetTime(double distance)
+    public double GetTime(double distance)
     {
         return distance / Power;
     }

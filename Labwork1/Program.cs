@@ -20,7 +20,7 @@ var route = new Route(
         {
             new Meteorite()
         }),
-        new IncreaseDensity(10, new List<IIncreaseDensityObstacle>()
+        new IncreaseDensity(10000, new List<IIncreaseDensityObstacle>()
         {
             new FotoneFlash()
         })

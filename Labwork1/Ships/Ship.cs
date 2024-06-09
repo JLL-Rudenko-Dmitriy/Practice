@@ -15,11 +15,11 @@ public class Ship
     
     public ShipState ShipState { get; set; } = ShipState.Ok;
 
-    public Engine? ImpulseEngine { get; set; }
-    public Engine? JumpEngine { get; set; }
+    public IImpulseEngine? ImpulseEngine { get; set; }
+    public IJumpEngine? JumpEngine { get; set; }
 
 
-    public Ship(Deflector? deflector, HullStrengthClass hullStrengthClass, Engine? impulseEngine, Engine? jumpEngine)
+    public Ship(Deflector? deflector, HullStrengthClass hullStrengthClass, IImpulseEngine? impulseEngine, IJumpEngine? jumpEngine)
     {
         Deflector = deflector;
         HullStrengthClass = hullStrengthClass;

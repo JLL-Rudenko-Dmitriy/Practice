@@ -21,19 +21,11 @@ public class SimpleSpace: IEnvironment
         ObstaclesList = obstaclesList.ToList();
     }
 
-    public WalkthroughRecord LaunchShip(Ship ship)
+    public WalkThroughResult LaunchShip(Ship ship)
     {
-        var status = new
-        {
-            Success = "Covered",
-            InvalidEngine = "InvalidEngine",
-            Destroyed = "ShipDestroyed"
-        };
-        
-            
         if (ship.ImpulseEngine is null)
         {
-            return new WalkthroughRecord(status.InvalidEngine, 0,0,0);
+            return new WalkThroughResult.InvalidEngine();
         }
         var fuelValue = ship.ImpulseEngine.GetRequiredFuel(Distance);
 
@@ -45,7 +37,7 @@ public class SimpleSpace: IEnvironment
         var time = ship.ImpulseEngine.GetTime(Distance);
         
         return ship.ShipState == ShipState.ShipDestroyed ? 
-            new WalkthroughRecord(status.Destroyed, 0,0, 0) : 
-            new WalkthroughRecord(status.Success, fuelValue,0,time);
+            new WalkThroughResult.Destroyed() : 
+            new WalkThroughResult.Success( fuelValue,0,time);
     }
 }

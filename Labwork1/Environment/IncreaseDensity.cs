@@ -1,4 +1,5 @@
-﻿using Labworks.Obstacles;
+﻿using Labworks.Engines.JumpEngines;
+using Labworks.Obstacles;
 using Labworks.Ships;
 using Labworks.States;
 
@@ -21,19 +22,16 @@ public class IncreaseDensity: IEnvironment
         ObstaclesList = obstaclesList;
     }
     
-    public WalkthroughRecord LaunchShip(Ship ship)
+    public WalkThroughResult LaunchShip(Ship ship)
     {
-        var status = new
-        {
-            Success = "Covered",
-            InvalidEngine = "InvalidEngine",
-            Destroyed = "ShipDestroyed",
-            CrewDied = "CrewDied"
-        };
-        
         if (ship.JumpEngine is null)
         {
-            return new WalkthroughRecord(status.InvalidEngine, 0,0,0);
+            return new WalkThroughResult.InvalidEngine();
+        }
+            
+        if (!ship.JumpEngine.CanJumpOver(Distance))
+        {
+            return new WalkThroughResult.LowJumpDistance();
         }
         
         var fuelValue = ship.JumpEngine.GetRequiredFuel(Distance);
@@ -47,9 +45,9 @@ public class IncreaseDensity: IEnvironment
 
         return ship.ShipState switch
         {
-            ShipState.Ok => new WalkthroughRecord(status.Success, 0,fuelValue, time),
-            ShipState.CrewDied => new WalkthroughRecord(status.CrewDied, 0, 0,0),
-            _ => new WalkthroughRecord(status.Destroyed, 0, 0,0)
+            ShipState.Ok => new WalkThroughResult.Success(0,fuelValue, time),
+            ShipState.CrewDied => new WalkThroughResult.CrewDie(),
+            _ => new WalkThroughResult.Destroyed()
         };
     }
 }

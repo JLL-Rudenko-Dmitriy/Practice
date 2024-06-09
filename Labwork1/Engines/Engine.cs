@@ -1,7 +1,9 @@
-﻿using Labworks.Fuels;
+﻿using Labworks.Engines.ImpulseEngines;
+using Labworks.Engines.JumpEngines;
+using Labworks.Fuels;
 namespace Labworks.Engines;
 
-public abstract class Engine
+public interface IEngine
 {
     protected double FuelConsumption { get; init; }
     protected double Power { get; init; }

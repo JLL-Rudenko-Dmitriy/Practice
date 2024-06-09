@@ -9,6 +9,6 @@ namespace Labworks.SpaceEnvironments;
 public interface IEnvironment
 {
     public double Distance { get; init; }
-    public WalkthroughRecord LaunchShip(Ship ship);
+    public WalkThroughResult LaunchShip(Ship ship);
 }
 
